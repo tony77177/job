@@ -23,11 +23,11 @@ class Spider_model extends CI_Model{
 
         $title = $data['title'];
         $url = $data['url'];
+        $insert_dt = $data['insert_dt'];
 
-        $sql = "INSERT INTO 36kr(title,url) VALUES('" . $title . "','" . $url . "')";
+        $sql = "INSERT INTO t_info(title,url,insert_dt) VALUES('" . $title . "','" . $url . "','".$insert_dt."')";
 
-        $query = $this->common_model->getDataList($sql, 'default');
-        return $query;
+        $this->common_model->execQuery($sql, 'default',TRUE);
     }
 
 
@@ -38,7 +38,8 @@ class Spider_model extends CI_Model{
          * @return mixed
          */
     function get_info_list($offset = NULL, $page_size = NULL) {
-        $sql = "SELECT * FROM 36kr ORDER BY id DESC LIMIT $offset,$page_size";
+//        $sql = "SELECT * FROM 36kr ORDER BY insert_dt DESC LIMIT $offset,$page_size";
+        $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC";
         $query = $this->common_model->getDataList($sql, 'default');
         return $query;
     }

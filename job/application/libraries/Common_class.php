@@ -246,20 +246,31 @@ class Common_class {
         return $config;
     }
 
-    public function getAdminLevel(){
-        return $this->config->config['userdefine']['admin_level'];
-    }
-
-    // 获取分页每页记录条数
-    public function getPerPage(){
-        $this->config->load('userdefine', true);
-        $config = $this->config->config['userdefine'];
-
-        if ($config['per_page']) {
-            return $config['per_page'];
-        }else{
-            return 15;
-        }
+    /**
+     * 格式化时间，进行友好显示
+     * @param $ptime
+     * @return string
+     */
+    function getFormatTime( $ptime ) {
+        $ptime = strtotime($ptime);
+        $etime = time() - $ptime;
+        if ($etime < 1) return '刚刚';
+        $interval = array (
+            12 * 30 * 24 * 60 * 60 => '年前 ('.date('Y-m-d', $ptime).')',
+            30 * 24 * 60 * 60 => '个月前 ('.date('m-d', $ptime).')',
+            7 * 24 * 60 * 60 => '周前 ('.date('m-d', $ptime).')',
+            24 * 60 * 60 => '天前',
+            60 * 60 => '小时前',
+            60 => '分钟前',
+            1 => '秒前'
+        );
+        foreach ($interval as $secs => $str) {
+            $d = $etime / $secs;
+            if ($d >= 1) {
+                $r = round($d);
+                return $r . $str;
+            }
+        };
     }
 
     /**

@@ -17,6 +17,7 @@ class Index extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('spider_model');
+        $this->load->library('common_class');
     }
 
     /**
