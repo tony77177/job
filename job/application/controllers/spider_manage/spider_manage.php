@@ -24,7 +24,8 @@ class Spider_manage extends CI_Controller{
 
     function index(){
 //        $this->get_163gz_info();
-        $this->get_gufe_info('EnterpriseInfo');
+//        $this->get_gufe_info('EnterpriseInfo');
+        $this->get_gufe_info('CampusInfo');
     }
 
 
@@ -230,22 +231,20 @@ class Spider_manage extends CI_Controller{
                 $test = '/<a href="(.*?)".*?target="_blank".*?class="news_link".*?title="(.*?)">.*?<td.*?width=\"10%\".*?><span.*?style=\"color:#666666\">(.*?)<\/span>/ism';
                 $result = preg_match($test, $title[0][$i], $matches);
 
-                print_r($matches);exit;
+                $prefix_url = "http://sw.gzife.edu.cn:8080/jiuyemis/";//URL前缀
+
+                $url_merge = $prefix_url.$matches[1];//合并后的URL
+                $title_merge = $matches[2];//标题
+
+                $dt_merge = trim($matches[3]);//时间
+                $dt_merge = date("Y-m-d H:i:s",strtotime($dt_merge));//格式化
 
                 //是否为本站，排除广告信息
-                $is_auth = strstr($matches[1],'www.163gz.com');
+                $is_auth = strstr($matches[1],'info.do');
 
                 if ($is_auth) {
-
-                    //访问URL，获取该条数据发布时间
-                    $page_dt = file_get_contents($matches[1]);
-
-                    preg_match('/<td.*?align="center".*?valign="middle".*?bgcolor="#F7F7F7".*?class="style16"><div.*?align="left">(.*?) /i', $page_dt, $dt);
-
                     if ($result) {
-                        $title_news = strip_tags($matches[2]);
-                        $title_encode = mb_convert_encoding($title_news, "UTF-8", "GBK");//编码转换
-                        $save_result = $this->save_info($title_encode,$matches[1],$dt[1],'163gz.com');
+                        $save_result = $this->save_info($title_merge,$url_merge,$dt_merge,'gufe.edu.cn');
                         if (isset($save_result) && $save_result == TRUE) {
                             $num++;
                         }

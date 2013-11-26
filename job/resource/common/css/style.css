@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+
+.zw_daxue a{ font-size:12px; color:#666; display:inline-block; padding:3px 10px; border-radius:6px}
+.zw_daxue a:hover{ color:#FFF; background:rgb(101,147,74); text-decoration:none}
+.active01{ background:rgb(64,112,52)}
+.nav .open{  background:rgb(64,112,52) !important}
+.navbar-nav .open{  background:rgb(64,112,52) !important}
+.zw_xiaola li a:hover{ background:rgb(160,191,124)}
+/*主体内容css-----------------------*/
+.zw_list{ list-style-type:none; margin-top:30px;}
+.zw_list_a{ display:inline-block; padding:0 5px; width:100%; color:#666}
+.zw_list_a:hover{ background:rgb(64,116,52); color:#fff; text-decoration:none}
+.zw_list li{ line-height:40px;}
+.zw_list li .zw_laiyuan{ display:inline-block; width:200px; float:left}
+.zw_list li .zw_biaoti{ }
+.zw_list li .zw_shijian{ display:inline-block; width:60px; text-align:center; float:right}
+.zw_list_first{ font-size:16px; font-family:"微软雅黑"; font-weight:bold}
+
+
+
+
