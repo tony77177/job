@@ -13,8 +13,6 @@
 
 class Spider_manage extends CI_Controller{
 
-    private $start = 207900;
-    private $end = 207912;
     private $number = 0;//计数
     private $url = NULL;//爬取信息地址
     private $pattern = NULL;//获取信息正则
@@ -25,45 +23,18 @@ class Spider_manage extends CI_Controller{
     }
 
     function index(){
-        $this->get_163gz_info();
-    }
-
-    function get_info_temp(){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        for ($i = $this->start; $i <= $this->end; $i++) {
-            $url = "http://www.36kr.com/p/" . $i . ".html";
-            curl_setopt($ch, CURLOPT_URL, $url);
-            $page = curl_exec($ch);
-
-
-            $regex = "/(<h1.*?class=\"entry-title sep10\".*?>.*?<\/h1>)/ism";
-
-            $regex4 = "/.*?<h1 class=\"entry-title sep10\">(.*?)<\/h1>.*?/";
-
-            if (curl_getinfo($ch)['http_code'] == 200) {
-
-                $t = preg_match($regex, $page, $title);
-//                preg_match_all($regex4, $str, $matches));
-//                $c = preg_match('#<div class="mainContent sep-10">.*</div>#Us', $page, $content);
-                if ($t) {
-                    $title = trim(strip_tags($title[0]));//去除HTML标签
-                    $this->number++;
-                    $data = array(
-                        'title' => $title,
-                        'url' => $url
-                    );
-                    $this->spider_model->save_info($data);
-                }
-            }
-        }
-        echo "Success , total num is: ".$this->number;
+//        $this->get_163gz_info();
+        $this->get_gufe_info('EnterpriseInfo');
     }
 
 
-    function get_info($_url,$_pattern){
+
+    /**
+         * 获取页面信息
+         * @param $_url
+         * @return mixed
+         */
+    function get_page_info($_url){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -72,62 +43,218 @@ class Spider_manage extends CI_Controller{
         curl_setopt($ch, CURLOPT_URL, $url);
         $page = curl_exec($ch);
 
+        $data = array(
+            'page' =>$page,
+            'ch' =>$ch
+        );
+        return $data;
+    }
+
+    /**
+         *  检测数据是否存在
+         * @param $_title
+         * @param $_url
+         */
+    function check_info($_title,$_url){
+        $data = array(
+            'title' => $_title,
+            'url' => $_url
+        );
+        return $this->spider_model->check_info($data);
+    }
+
+    /**
+         * 写入数据
+         * @param $_title               标题（编码为UTF-8）
+         * @param $_url                 URL
+         * @param $_insert_dt       时间
+         * @param $_from             来源
+         */
+    function save_info($_title,$_url,$_insert_dt,$_from){
+
+        if($this->check_info($_title,$_url)){
+            $data = array(
+                'title' => $_title,
+                'url' => $_url,
+                'insert_dt' => $_insert_dt,
+                'from' => $_from
+            );
+            return $this->spider_model->save_info($data);
+        }
+    }
+
+    /**
+         *  输出结果
+         * @param $_from
+         */
+    function get_result_num($_from){
+        echo "Success , total num is: " . $this->number.' , from '.$_from;
+    }
+
+    function get_info($_url){
+        $num = 0;//单独计数
+
+        $data = $this->get_page_info($_url);
+
+        $page = $data['page'];
+
         $regex = "/(<p.*?class=\"STYLE4\".*?>.*?<\/p>)/ism";
 
+        if (curl_getinfo($data['ch'])['http_code'] == 200) {
 
-        if (curl_getinfo($ch)['http_code'] == 200) {
-
+            //获取内容部分信息
             preg_match_all ($regex, $page, $content);
 
-//            print_r($content);
-
+            //进行逐条数据获取
             preg_match_all('/(<a.*?>.*?<br.*?\/>)/ism',$content[0][0],$title);
 
-//            print_r($title);
-
             for($i=0;$i<count($title[0]);$i++){
-//                echo strip_tags($title[0][$i]);
 
-//                print_r($title[0][$i]);
-
+                //获取跳转URL和标题名
                 $test = '/<a.*?href="(.*?)".*?>(.*?)<\/a>/i';
-
                 $result = preg_match($test, $title[0][$i], $matches);
 
-//                echo $matches[1];
-                $is_auth = strstr($matches[1],'www.163gz.com');//是否为本站，排除广告信息
+                //是否为本站，排除广告信息
+                $is_auth = strstr($matches[1],'www.163gz.com');
 
                 if ($is_auth) {
 
+                    //访问URL，获取该条数据发布时间
                     $page_dt = file_get_contents($matches[1]);
                     preg_match('/<td.*?align="center".*?valign="middle".*?bgcolor="#F7F7F7".*?class="style16"><div.*?align="left">(.*?) /i', $page_dt, $dt);
-//                print_r($dt[1]);
 
-//                echo strip_tags($matches[2])." ".$result." ".$matches[1]."<br>";
                     if ($result) {
                         $title_news = strip_tags($matches[2]);
-                        mb_convert_encoding($title_news, "UTF-8", "GBK");
-                        $this->number++;
-                        $data = array(
-                            'title' => mb_convert_encoding($title_news, "UTF-8", "GBK"),
-                            'url' => $matches[1],
-                            'insert_dt' => $dt[1]
-                        );
-                        $this->spider_model->save_info($data);
+                        mb_convert_encoding($title_news, "UTF-8", "GBK");//编码转换
+                        $save_result = $this->save_info($title_news,$matches[1],$dt[1],'163gz.com');
+                        if (isset($save_result) && $save_result == TRUE) {
+                            $num++;
+                        }
                     }
                 }
-////                print_r($matches); //为href的值
-
-//                echo "<br>";
             }
         }
-        echo "Success , total num is: " . $this->number;
+        $this->number = $num;//计数
+        $this->get_result_num('163gz.com');//输出结果
     }
 
+    /**
+         *  获取 163gz.com 数据
+         */
     function get_163gz_info(){
-        $this->url = "http://www.163gz.com/js/163.html";
-        $this->pattern = "/(<p class=\"STYLE4\">(.*?)</p>)/ism";
-        $this->get_info($this->url,$this->pattern);
+        $url = "http://www.163gz.com/js/163.html";
+
+        $num = 0;//单独计数
+
+        $data = $this->get_page_info($url);
+
+        $page = $data['page'];
+
+        $regex = "/(<p.*?class=\"STYLE4\".*?>.*?<\/p>)/ism";
+
+        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+
+            //获取内容部分信息
+            preg_match_all ($regex, $page, $content);
+
+            //进行逐条数据获取
+            preg_match_all('/(<a.*?>.*?<br.*?\/>)/ism',$content[0][0],$title);
+
+
+            for($i=0;$i<count($title[0]);$i++){
+
+                //获取跳转URL和标题名
+                $test = '/<a.*?href="(.*?)".*?>(.*?)<\/a>/i';
+                $result = preg_match($test, $title[0][$i], $matches);
+
+                //是否为本站，排除广告信息
+                $is_auth = strstr($matches[1],'www.163gz.com');
+
+                if ($is_auth) {
+
+                    //访问URL，获取该条数据发布时间
+                    $page_dt = file_get_contents($matches[1]);
+
+                    preg_match('/<td.*?align="center".*?valign="middle".*?bgcolor="#F7F7F7".*?class="style16"><div.*?align="left">(.*?) /i', $page_dt, $dt);
+
+                    if ($result) {
+                        $title_news = strip_tags($matches[2]);
+                        $title_encode = mb_convert_encoding($title_news, "UTF-8", "GBK");//编码转换
+                        $save_result = $this->save_info($title_encode,$matches[1],$dt[1],'163gz.com');
+                        if (isset($save_result) && $save_result == TRUE) {
+                            $num++;
+                        }
+                    }
+                }
+            }
+        }
+        $this->number = $num;//计数
+        $this->get_result_num('163gz.com');//输出结果
+    }
+
+    /**
+         * 获取财院数据信息
+         * @para $_tag 财院就业信息网根据 cateName 参数来区分是校招新闻还是网络招聘新闻
+         *      EnterpriseInfo：网络招聘
+         *      CampusInfo：  校园招聘
+         */
+    function get_gufe_info($_tag){
+        $url = "http://sw.gzife.edu.cn:8080/jiuyemis/moreJobs.do?method=moreJobs&cateName=".$_tag;
+
+        $num = 0;//单独计数
+
+        $data = $this->get_page_info($url);
+
+        $page = $data['page'];
+
+        $regex = "/(<table.*?width=\"100%\".*?border=\"0\".*?cellspacing=\"0\".*?cellpadding=\"0\">.*?<\/table>)/ism";
+
+        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+
+            //获取内容部分信息
+            preg_match_all ($regex, $page, $content);
+
+            //进行逐条数据获取
+            preg_match_all('/(<div.*?id=\"job_list\">.*?<script)/ism',$content[0][0],$title);
+
+            preg_match_all('/(<table.*?width=\"100%\".*?border=\"0\".*?cellspacing=\"0\".*?cellpadding=\"0\">.*?<script)/ism',$title[0][0],$title);
+
+            preg_match_all('/(<table.*?width=\"100%\".*?border=\"0\".*?cellspacing=\"0\".*?cellpadding=\"0\">.*?<script)/ism',$title[0][0],$title);
+
+            preg_match_all('/(<tr>.*?<\/tr>)/ism',$title[0][0],$title);
+
+
+            for($i=0;$i<count($title[0]);$i++){
+
+                //获取跳转URL和标题名
+                $test = '/<a href="(.*?)".*?target="_blank".*?class="news_link".*?title="(.*?)">.*?<td.*?width=\"10%\".*?><span.*?style=\"color:#666666\">(.*?)<\/span>/ism';
+                $result = preg_match($test, $title[0][$i], $matches);
+
+                print_r($matches);exit;
+
+                //是否为本站，排除广告信息
+                $is_auth = strstr($matches[1],'www.163gz.com');
+
+                if ($is_auth) {
+
+                    //访问URL，获取该条数据发布时间
+                    $page_dt = file_get_contents($matches[1]);
+
+                    preg_match('/<td.*?align="center".*?valign="middle".*?bgcolor="#F7F7F7".*?class="style16"><div.*?align="left">(.*?) /i', $page_dt, $dt);
+
+                    if ($result) {
+                        $title_news = strip_tags($matches[2]);
+                        $title_encode = mb_convert_encoding($title_news, "UTF-8", "GBK");//编码转换
+                        $save_result = $this->save_info($title_encode,$matches[1],$dt[1],'163gz.com');
+                        if (isset($save_result) && $save_result == TRUE) {
+                            $num++;
+                        }
+                    }
+                }
+            }
+        }
+        $this->number = $num;//计数
+        $this->get_result_num('gufe.edu.cn');//输出结果
     }
 
 }

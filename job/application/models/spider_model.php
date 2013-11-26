@@ -13,6 +13,24 @@ class Spider_model extends CI_Model{
         $this->load->model('common_model');
     }
 
+    /**
+         * 检查数据是否存在
+         * @param array $data
+         * @return bool
+         */
+    function check_info($data = array()){
+        $title = $data['title'];
+        $url = $data['url'];
+
+        $sql = "SELECT COUNT(1) AS num FROM t_info WHERE title='" . $title . "' AND url='" . $url . "'";
+
+        $num = $this->common_model->getTotalNum($sql, 'default');
+        if ($num > 0) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
     /**
          * 保存数据
@@ -24,10 +42,12 @@ class Spider_model extends CI_Model{
         $title = $data['title'];
         $url = $data['url'];
         $insert_dt = $data['insert_dt'];
+        $from = $data['from'];
 
-        $sql = "INSERT INTO t_info(title,url,insert_dt) VALUES('" . $title . "','" . $url . "','".$insert_dt."')";
+        $sql = "INSERT INTO t_info(`title`,`url`,`insert_dt`,`from`) VALUES('" . $title . "','" . $url . "','" . $insert_dt . "','" . $from . "')";
 
-        $this->common_model->execQuery($sql, 'default',TRUE);
+        $result = $this->common_model->execQuery($sql, 'default', TRUE);
+        return $result;
     }
 
 
