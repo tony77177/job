@@ -103,7 +103,7 @@
                 ?>
                 <li><a class="zw_list_a" data-toggle="tooltip" title="<?php echo $info_list[$i]["title"];?>" href="<?php echo $info_list[$i]["url"];?>" target="_blank">
                         <span class="hidden-xs hidden-sm zw_laiyuan"><?php echo $info_list[$i]["from"];?></span>
-                        <span class="zw_biaoti"><?php echo $info_list[$i]["title"];?><span class="badge">0</span></span>
+                        <span class="zw_biaoti"><?php echo $this->common_class->SubContents($info_list[$i]["title"]);?><span class="badge">0</span></span>
                         <span class="hidden-xs zw_shijian"><?php echo $this->common_class->getFormatTime($info_list[$i]["insert_dt"]);?></span></a></li>
                  <?php
                     }

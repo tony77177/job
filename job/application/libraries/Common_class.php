@@ -41,19 +41,6 @@ class Common_class {
         return $url;
     }
 
-    /**
-     * 获取userdefine内容
-     * @param string $key   userdefine键值
-     * @return array        数组    
-     */
-    public function getUserConfInfo($key=null){
-        $this->config->load('userdefine', true);
-        if ($key) {
-            return $this->config->config['userdefine'][$key];
-        }else{
-            return $this->config->config['userdefine'];
-        }
-    }
 
     /**
      * 获取当前微妙时间
@@ -64,134 +51,6 @@ class Common_class {
         return time().substr(microtime(), 2,6);
     }
 
-    /**
-     * 金币操作变化原因
-     * @param int $no   操作reason值
-     * @return string   操作原因
-     */
-    public function getGradeChangeReason($no) {
-        switch ($no) {
-            case '0':
-                return "用户升级";
-                break;
-            case '1':
-                return "APP购买";
-                break;
-            case '2':
-                return "随机摇取金币";
-                break;
-            case '3':
-                return "系统赠送,首次注册";
-                break;
-            case '4':
-                return "系统每日赠送";
-                break;
-            case '5':
-                return "赠送礼物(花费的是购买金币)";
-                break;
-            case '6':
-                return "礼物";
-                break;
-            case '7':
-                return "被关注";
-                break;
-            case '8':
-                return "被取消关注";
-                break;
-            case '9':
-                return "冻结积分";
-                break;
-            case '10':
-                return "兑换积分成功";
-                break;
-            case '11':
-                return "兑换积分失败,恢复用户冻结积分";
-                break;
-            case '12':
-                return "顶帖子";
-                break;
-            case '13':
-                return "支付宝";
-                break;
-            case '14':
-                return "赠送礼物(花费的是赠送金币)";
-                break;
-            case '15':
-                return "兑换金币";
-                break;
-            case '16':
-                return "玩野球拳(花费的是购买金币)";
-                break;
-            case '17':
-                return "玩野球拳(花费的是赠送金币)";
-                break;
-            case '18':
-                return "野球拳";
-                break;
-            case '19':
-                return "人工操作";
-                break;
-            default :
-                return "暂无定义";
-                break;
-        }
-    }
-
-
-    /**
-     * 根据UID获取用户所属库
-     * @param string $uid
-     * @return 相应库名
-     */
-    public function getUserGroup($uid){
-        $result = (int)($uid/$this->group_num);
-        if($result==0){
-            return 'db_blog';
-        }else{
-            return 'db_blog'.++$result;
-        }
-    }
-    
-    /**
-     * 根据UID获取用户信息
-     * @param string $uid   用户ID
-     * @param bool $flag    显示单一信息还是数组的标志
-     * @return mixed        用户信息
-     */
-    public function getUserInfo($uid, $flag = TRUE) {
-        //通过IWS获取用户信息和金豆值
-        $user_info_url = PPWS_URL . '?json={"op_type":"1026","user_id":"' . $uid . '","auth_key":"' . md5(AUTH_KEY) . '"}';
-        $rst = file_get_contents($user_info_url);
-        $rst = json_decode($rst);
-
-        if (is_object($rst->user_info)) {
-            $user_name   = $rst->user_info->user_name;                     //用户昵称
-            $grade_value = $rst->user_info->grade_value;                    //金豆总数
-            //$freeze_grade_value = $rst->user_info->freeze_grade_value; //冻结金豆数
-            //$current_grade_value = $grade_num - $freeze_grade_value;    //当前可用金豆数
-        }else{
-            $user_name   = null;
-            $grade_value = 0;
-        }
-        $user_info = array("user_name" => $user_name, "grade_value" => intval($grade_value));
-        if ($flag == TRUE) {
-            return $user_info;
-        } else {
-            return $user_name;
-        }
-    }
-    
-    /**
-     * 根据UID获取用户银行账户信息
-     * @param string $uid       用户ID
-     * @return mixed            结果集
-     */
-    public function getUserBankInfo($uid){
-        $sql = "SELECT * FROM v_user_sign_bank_info WHERE user_id='".$uid."'";
-        $this->db_admin = $this->load->database('db_admin',TRUE);
-        $query = $this->db_admin->query($sql);
-        return $query->row();
-    }
     
     /**
      * 分页生成
@@ -271,6 +130,23 @@ class Common_class {
                 return $r . $str;
             }
         };
+    }
+
+
+    /**
+     * 截取字符串
+     * @param $contents
+     * @param $length
+     * @return string
+     */
+    function SubContents($contents, $length = 35){
+        $lx = strlen($contents);
+        //yecho $lx;exit;
+        if ($lx > $length) {
+            return mb_substr($contents, 0, $length, 'UTF-8') . "...";
+        } else {
+            return $contents;
+        }
     }
 
     /**
