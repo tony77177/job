@@ -116,7 +116,7 @@
 
             </ul>
         </div>
-        <div class="col-md-3 visible-lg visible-md">&emsp;</div>
+        <div class="col-md-3 visible-lg visible-md"><strong>{elapsed_time}</strong> seconds.</div>
     </div>
 </div>
 <!-- 链接jquery.js网络文件 -->

@@ -26,8 +26,9 @@ class Spider_manage extends CI_Controller{
 //        $this->get_163gz_info();
 //        $this->get_gufe_info('EnterpriseInfo');
 //        $this->get_gufe_info('CampusInfo');
-//        $this->get_gzu_index_info('channels/terminfor/orgJobs');
-        $this->get_gzu_index_info('recruitment/campus');
+//        $this->get_gzu_official_info('lowerJobs');
+//        $this->get_gzu_index_info('recruitment/campus');
+        $this->get_gzu_campus_info('campus');
     }
 
 
@@ -259,11 +260,11 @@ class Spider_manage extends CI_Controller{
     }
 
     /**
-         * 获取贵大首页招聘信息，和财院一样，根据区分参数来区别栏目
+         * 获取贵大首页招聘信息，和财院一样，根据区分参数来区别栏目（此处为获取公考栏目信息）
         * @para $_tag 获取信息参数
         */
-    function get_gzu_index_info($_tag){
-        $url = "http://jobs.gzu.edu.cn/".$_tag;
+    function get_gzu_official_info($_tag){
+        $url = "http://jobs.gzu.edu.cn/channels/terminfor/".$_tag;
 
         $num = 0;//单独计数
 
@@ -298,6 +299,61 @@ class Spider_manage extends CI_Controller{
 
                 //是否为本站，排除广告信息
                 $is_auth = strstr($matches[1],'article');
+
+                if ($is_auth) {
+                    if ($result) {
+                        $save_result = $this->save_info($title_merge,$url_merge,$dt_merge,'gzu.edu.cn');
+                        if (isset($save_result) && $save_result == TRUE) {
+                            $num++;
+                        }
+                    }
+                }
+            }
+        }
+        $this->number = $num;//计数
+        $this->get_result_num('gzu.edu.cn');//输出结果
+    }
+
+    /**
+     * 获取校招信息
+     * @param $_tag 传入栏目参数
+     */
+    function get_gzu_campus_info($_tag){
+        $url = "http://jobs.gzu.edu.cn/recruitment/".$_tag;
+
+        $num = 0;//单独计数
+
+        $data = $this->get_page_info($url);
+
+        $page = $data['page'];
+
+        $regex = "/<div.class=\"area-mainList\">.*?<\/ul>/ism";
+
+        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+
+            //获取内容部分信息
+            preg_match_all ($regex, $page, $content);
+
+            //进行逐条数据获取
+            preg_match_all('/<li>(.*?)<\/li>/ism',$content[0][0],$title);
+
+
+            for($i=0;$i<count($title[0]);$i++){
+
+                //获取跳转URL和标题名
+                $test = '/<a.href="(.*?)".*?>(.*?)<\/a>.*?<div.style=\"float:right;margin-right:20px;\">(.*?)<\/div>/ism';
+                $result = preg_match($test, $title[0][$i], $matches);
+
+                $prefix_url = "http://jobs.gzu.edu.cn/";//URL前缀
+
+                $url_merge = $prefix_url.$matches[1];//合并后的URL
+
+                $title_merge = $matches[2];//标题
+
+                $dt_merge = substr($matches[3],1,strlen($matches[3])-2);//时间格式化，因为此处获取时间格式为 [2013-06-21 15:09:07]
+
+                //是否为本站，排除广告信息
+                $is_auth = strstr($matches[1],'jobsinfor');
 
                 if ($is_auth) {
                     if ($result) {

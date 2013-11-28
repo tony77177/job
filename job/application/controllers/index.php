@@ -25,6 +25,7 @@ class Index extends CI_Controller {
          */
     public function index()
     {
+//        $this->output->cache(5);//进行缓存
         $data['info_list'] = $this->spider_model->get_info_list(0,15);
         $this->load->view('index', $data);
     }
