@@ -18,6 +18,7 @@ class Index extends CI_Controller {
         parent::__construct();
         $this->load->model('spider_model');
         $this->load->library('common_class');
+        $this->load->driver('cache');
     }
 
     /**
@@ -25,9 +26,52 @@ class Index extends CI_Controller {
          */
     public function index()
     {
-//        $this->output->cache(5);//进行缓存
-        $data['info_list'] = $this->spider_model->get_info_list(0,15);
+        //存放缓存，如果存在直接使用；否则重新读取数据
+        if (!$this->cache->file->get('cache_info_list')) {
+            $data['info_list'] = $this->spider_model->get_info_list(0, 15);
+            $this->cache->file->save('cache_info_list', $data['info_list'], 7200);
+        } else {
+            $data['info_list'] = $this->cache->file->get('cache_info_list');
+        }
         $this->load->view('index', $data);
+    }
+
+    /**
+     * 跳转界面
+     * @param $_id
+     */
+    public function redirect($_id){
+        if (!isset($_id)) {
+            redirect('index');
+            exit;
+        }
+
+        $url = "";
+
+        if (!$this->cache->file->get('cache_url_' . $_id)) {
+            $url = $this->spider_model->get_url($_id);
+            if (!isset($url)) {
+                redirect('index');
+                exit;
+            }
+            $this->cache->file->save('cache_url_' . $_id, $url, 7200);
+        } else {
+            $url = $this->cache->file->get('cache_url_' . $_id);
+        }
+
+        redirect($url);
+        exit;
+    }
+
+    /**
+     * 清除缓存
+     */
+    public function clear_up(){
+        if($this->cache->file->delete('cache_info_list')){
+            echo "缓存清除成功";
+        }else{
+            echo "缓存清除失败";
+        }
     }
 }
 

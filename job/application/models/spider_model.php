@@ -38,14 +38,11 @@ class Spider_model extends CI_Model{
          * @return mixed
          */
     function save_info($data = array()){
-
         $title = $data['title'];
         $url = $data['url'];
         $insert_dt = $data['insert_dt'];
         $from = $data['from'];
-
         $sql = "INSERT INTO t_info(`title`,`url`,`insert_dt`,`from`) VALUES('" . $title . "','" . $url . "','" . $insert_dt . "','" . $from . "')";
-
         $result = $this->common_model->execQuery($sql, 'default', TRUE);
         return $result;
     }
@@ -60,6 +57,27 @@ class Spider_model extends CI_Model{
     function get_info_list($offset = NULL, $page_size = NULL) {
 //        $sql = "SELECT * FROM 36kr ORDER BY insert_dt DESC LIMIT $offset,$page_size";
         $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC";
+        $query = $this->common_model->getDataList($sql, 'default');
+        return $query;
+    }
+
+    /**
+     * 更新点击次数
+     * @param $_id
+     */
+    function update_info($_id){
+        $sql = "UPDATE t_info SET num=num+1 WHERE id='" . $_id . "'";
+        $result = $this->common_model->execQuery($sql, 'default', TRUE);
+        return $result;
+    }
+
+    /**
+     * 获取跳转URL
+     * @param $_id
+     * @return mixed
+     */
+    function get_url($_id){
+        $sql = "SELECT url FROM t_info WHERE id='".$_id."' LIMIT 1";
         $query = $this->common_model->getDataList($sql, 'default');
         return $query;
     }

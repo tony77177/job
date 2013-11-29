@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href="resource/common/img/favicon.ico" rel="shortcut icon"></link>
+    <link href="resource/common/img/favicon.ico" rel="shortcut icon">
     <!-- Bootstrap -->
     <link href="resource/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="resource/common/css/style.css" rel="stylesheet" type="text/css">
@@ -81,9 +81,9 @@
             <div class="col-md-5" style="margin-bottom:5px;">
                 <div class="input-group">
                     <input style=" height:44px; font-size:22px;" class="form-control" type="text"
-                           placeholder="请输入搜索关键词"/>
-                    <span class="input-group-addon"> <a href=""><span
-                                class="glyphicon glyphicon-search"></span></a></span></div>
+                           placeholder="请输入搜索关键词" name="keywords"/>
+                    <span class="input-group-addon">
+                        <a href=""><span class="glyphicon glyphicon-search"></span></a></span></div>
             </div>
             <div class="col-md-3 zw_daxue"><a href="">贵大</a><a href="">财经大学</a><a href="">师大</a><a href="">民族大学</a><a
                     href="">医学院</a><a href="">中医学院</a></div>
