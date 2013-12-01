@@ -101,9 +101,9 @@
                 <?php
                     for($i=0;$i<count($info_list);$i++){
                 ?>
-                <li><a class="zw_list_a" data-toggle="tooltip" title="<?php echo $info_list[$i]["title"];?>" href="<?php echo $info_list[$i]["url"];?>" target="_blank">
-                        <span class="hidden-xs hidden-sm zw_laiyuan"><?php echo $info_list[$i]["from"];?></span>
-                        <span class="zw_biaoti"><?php echo $this->common_class->SubContents($info_list[$i]["title"]);?><span class="badge">0</span></span>
+                <li><a class="zw_list_a" data-toggle="tooltip" title="<?php echo $info_list[$i]["title"];?>" href="<?php echo site_url();?>/index/redirect/<?php echo $info_list[$i]["id"];?>" target="_blank">
+                        <span class="hidden-xs hidden-sm zw_laiyuan"><?php echo $info_list[$i]["from_src"];?></span>
+                        <span class="zw_biaoti"><?php echo $this->common_class->SubContents($info_list[$i]["title"]);?><span class="badge"><?php echo $info_list[$i]["num"];?></span></span>
                         <span class="hidden-xs zw_shijian"><?php echo $this->common_class->getFormatTime($info_list[$i]["insert_dt"]);?></span></a></li>
                  <?php
                     }
@@ -113,10 +113,36 @@
                     echo "<p>没有数据！</p>";
                 }
                 ?>
-
             </ul>
         </div>
-        <div class="col-md-3 visible-lg visible-md"><strong>{elapsed_time}</strong> seconds.</div>
+        <div class="col-md-3 visible-lg visible-md">
+            <div id="tagscloud">
+                <a href="" class="tagc1">公务员</a>
+                <a href="" class="tagc2">省考</a>
+                <a href="" class="tagc5">省公务员</a>
+                <a href="" class="tagc2">事业单位</a>
+                <a href="" class="tagc2" >贵阳事业单位</a>
+                <a href="" class="tagc1" >贵阳公务员</a>
+                <a href="" class="tagc2">银行招聘</a>
+                <a href="" class="tagc5">贵阳银行招聘</a>
+                <a href="" class="tagc2">中国银行招聘</a>
+                <a href="" class="tagc2">建设银行招聘</a>
+                <a href="" class="tagc5">农业银行招聘</a>
+                <a href="" class="tagc2">校园招聘</a>
+                <a href="" class="tagc1">贵州财经大学招聘</a>
+                <a href="" class="tagc2">贵大招聘</a>
+                <a href="" class="tagc5">师大校园招聘</a>
+                <a href="" class="tagc2">民族大学招聘</a>
+                <a href="" class="tagc2" >医学院招聘</a>
+                <a href="" class="tagc1" >中医学院招聘</a>
+                <a href="" class="tagc2">贵阳招聘</a>
+                <a href="" class="tagc5">遵义招聘</a>
+                <a href="" class="tagc2">凯里招聘</a>
+                <a href="" class="tagc2">仁怀招聘</a>
+                <a href="" class="tagc5">安顺招聘</a>
+                <a href="" class="tagc2">贵州招聘</a>
+            </div>
+        </div>
     </div>
 </div>
 <!-- 链接jquery.js网络文件 -->
@@ -127,5 +153,7 @@
 <script src="resource/common/js/zw_js.js"></script>
 <!-- 链接回到顶部.js文件 -->
 <script src="resource/common/js/huidaodingbu.js"></script>
+<!-- 右边模块.js文件 -->
+<script src="resource/common/js/zw_leift.js"></script>
 </body>
 </html>

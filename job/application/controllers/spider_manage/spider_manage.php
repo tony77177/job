@@ -14,30 +14,36 @@
 class Spider_manage extends CI_Controller{
 
     private $number = 0;//计数
-    private $url = NULL;//爬取信息地址
-    private $pattern = NULL;//获取信息正则
+    private $totalnum = 0;//总数
 
     function __construct(){
         parent::__construct();
         $this->load->model('spider_model');
+        $this->load->driver('cache');
     }
 
     function index(){
-//        $this->get_163gz_info();
+        $this->get_163gz_info();
 //        $this->get_gufe_info('EnterpriseInfo');
 //        $this->get_gufe_info('CampusInfo');
 //        $this->get_gzu_official_info('lowerJobs');
 //        $this->get_gzu_index_info('recruitment/campus');
         $this->get_gzu_campus_info('campus');
+
+        /**
+         * 如果读取到数据则清除首页缓存
+         */
+        if ($this->totalnum > 0) {
+            $this->cache->file->delete('cache_info_list');
+        }
     }
 
 
-
     /**
-         * 获取页面信息
-         * @param $_url
-         * @return mixed
-         */
+     * 获取页面信息
+     * @param $_url
+     * @return mixed
+     */
     function get_page_info($_url){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -55,10 +61,10 @@ class Spider_manage extends CI_Controller{
     }
 
     /**
-         *  检测数据是否存在
-         * @param $_title
-         * @param $_url
-         */
+     *  检测数据是否存在
+     * @param $_title
+     * @param $_url
+     */
     function check_info($_title,$_url){
         $data = array(
             'title' => $_title,
@@ -68,12 +74,12 @@ class Spider_manage extends CI_Controller{
     }
 
     /**
-         * 写入数据
-         * @param $_title               标题（编码为UTF-8）
-         * @param $_url                 URL
-         * @param $_insert_dt       时间
-         * @param $_from             来源
-         */
+     * 写入数据
+     * @param $_title 标题（编码为UTF-8）
+     * @param $_url                 URL
+     * @param $_insert_dt 时间
+     * @param $_from 来源
+     */
     function save_info($_title,$_url,$_insert_dt,$_from){
 
         if($this->check_info($_title,$_url)){
@@ -88,63 +94,16 @@ class Spider_manage extends CI_Controller{
     }
 
     /**
-         *  输出结果
-         * @param $_from
-         */
+     *  输出结果
+     * @param $_from
+     */
     function get_result_num($_from){
-        echo "Success , total num is: " . $this->number.' , from '.$_from;
-    }
-
-    function get_info($_url){
-        $num = 0;//单独计数
-
-        $data = $this->get_page_info($_url);
-
-        $page = $data['page'];
-
-        $regex = "/(<p.*?class=\"STYLE4\".*?>.*?<\/p>)/ism";
-
-        if (curl_getinfo($data['ch'])['http_code'] == 200) {
-
-            //获取内容部分信息
-            preg_match_all ($regex, $page, $content);
-
-            //进行逐条数据获取
-            preg_match_all('/(<a.*?>.*?<br.*?\/>)/ism',$content[0][0],$title);
-
-            for($i=0;$i<count($title[0]);$i++){
-
-                //获取跳转URL和标题名
-                $test = '/<a.*?href="(.*?)".*?>(.*?)<\/a>/i';
-                $result = preg_match($test, $title[0][$i], $matches);
-
-                //是否为本站，排除广告信息
-                $is_auth = strstr($matches[1],'www.163gz.com');
-
-                if ($is_auth) {
-
-                    //访问URL，获取该条数据发布时间
-                    $page_dt = file_get_contents($matches[1]);
-                    preg_match('/<td.*?align="center".*?valign="middle".*?bgcolor="#F7F7F7".*?class="style16"><div.*?align="left">(.*?) /i', $page_dt, $dt);
-
-                    if ($result) {
-                        $title_news = strip_tags($matches[2]);
-                        mb_convert_encoding($title_news, "UTF-8", "GBK");//编码转换
-                        $save_result = $this->save_info($title_news,$matches[1],$dt[1],'163gz.com');
-                        if (isset($save_result) && $save_result == TRUE) {
-                            $num++;
-                        }
-                    }
-                }
-            }
-        }
-        $this->number = $num;//计数
-        $this->get_result_num('163gz.com');//输出结果
+        echo "<br>Success , total num is: " . $this->number." , from ".$_from."<br>";
     }
 
     /**
-         *  获取 163gz.com 数据
-         */
+     *  获取 163gz.com 数据
+     */
     function get_163gz_info(){
         $url = "http://www.163gz.com/js/163.html";
 
@@ -194,14 +153,15 @@ class Spider_manage extends CI_Controller{
         }
         $this->number = $num;//计数
         $this->get_result_num('163gz.com');//输出结果
+        $this->totalnum = $this->totalnum + $this->number;//总数
     }
 
     /**
-         * 获取财院数据信息
-         * @para $_tag 财院就业信息网根据 cateName 参数来区分是校招新闻还是网络招聘新闻
-         *      EnterpriseInfo：网络招聘
-         *      CampusInfo：  校园招聘
-         */
+     * 获取财院数据信息
+     * @para $_tag 财院就业信息网根据 cateName 参数来区分是校招新闻还是网络招聘新闻
+     *      EnterpriseInfo：网络招聘
+     *      CampusInfo：  校园招聘
+     */
     function get_gufe_info($_tag){
         $url = "http://sw.gzife.edu.cn:8080/jiuyemis/moreJobs.do?method=moreJobs&cateName=".$_tag;
 
@@ -257,12 +217,13 @@ class Spider_manage extends CI_Controller{
         }
         $this->number = $num;//计数
         $this->get_result_num('gufe.edu.cn');//输出结果
+        $this->totalnum = $this->totalnum + $this->number;//总数
     }
 
     /**
-         * 获取贵大首页招聘信息，和财院一样，根据区分参数来区别栏目（此处为获取公考栏目信息）
-        * @para $_tag 获取信息参数
-        */
+     * 获取贵大首页招聘信息，和财院一样，根据区分参数来区别栏目（此处为获取公考栏目信息）
+     * @para $_tag 获取信息参数
+     */
     function get_gzu_official_info($_tag){
         $url = "http://jobs.gzu.edu.cn/channels/terminfor/".$_tag;
 
@@ -312,6 +273,7 @@ class Spider_manage extends CI_Controller{
         }
         $this->number = $num;//计数
         $this->get_result_num('gzu.edu.cn');//输出结果
+        $this->totalnum = $this->totalnum + $this->number;//总数
     }
 
     /**
@@ -344,7 +306,7 @@ class Spider_manage extends CI_Controller{
                 $test = '/<a.href="(.*?)".*?>(.*?)<\/a>.*?<div.style=\"float:right;margin-right:20px;\">(.*?)<\/div>/ism';
                 $result = preg_match($test, $title[0][$i], $matches);
 
-                $prefix_url = "http://jobs.gzu.edu.cn/";//URL前缀
+                $prefix_url = "http://jobs.gzu.edu.cn";//URL前缀
 
                 $url_merge = $prefix_url.$matches[1];//合并后的URL
 
@@ -367,6 +329,7 @@ class Spider_manage extends CI_Controller{
         }
         $this->number = $num;//计数
         $this->get_result_num('gzu.edu.cn');//输出结果
+        $this->totalnum = $this->totalnum + $this->number;//总数
     }
 
 }

@@ -42,7 +42,7 @@ class Spider_model extends CI_Model{
         $url = $data['url'];
         $insert_dt = $data['insert_dt'];
         $from = $data['from'];
-        $sql = "INSERT INTO t_info(`title`,`url`,`insert_dt`,`from`) VALUES('" . $title . "','" . $url . "','" . $insert_dt . "','" . $from . "')";
+        $sql = "INSERT INTO t_info(`title`,`url`,`insert_dt`,`from_src`) VALUES('" . $title . "','" . $url . "','" . $insert_dt . "','" . $from . "')";
         $result = $this->common_model->execQuery($sql, 'default', TRUE);
         return $result;
     }
@@ -55,8 +55,8 @@ class Spider_model extends CI_Model{
          * @return mixed
          */
     function get_info_list($offset = NULL, $page_size = NULL) {
-//        $sql = "SELECT * FROM 36kr ORDER BY insert_dt DESC LIMIT $offset,$page_size";
-        $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC";
+        $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC LIMIT $offset,$page_size";
+//        $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC";
         $query = $this->common_model->getDataList($sql, 'default');
         return $query;
     }
@@ -79,7 +79,7 @@ class Spider_model extends CI_Model{
     function get_url($_id){
         $sql = "SELECT url FROM t_info WHERE id='".$_id."' LIMIT 1";
         $query = $this->common_model->getDataList($sql, 'default');
-        return $query;
+        return $query[0]['url'];
     }
 
 }
