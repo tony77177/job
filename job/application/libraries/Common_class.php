@@ -134,13 +134,36 @@ class Common_class {
 
 
     /**
+     * 获取字符串长度
+     * @param $str
+     * @return int
+     */
+    function strlen_UTF8($str){
+        $len = strlen($str);
+        $n = 0;
+        for($i = 0; $i < $len; $i++) {
+            $x = substr($str, $i, 1);
+            $a  = base_convert(ord($x), 10, 2);
+            $a = substr('00000000'.$a, -8);
+            if (substr($a, 0, 1) == 0) {
+            }elseif (substr($a, 0, 3) == 110) {
+                $i += 1;
+            }elseif (substr($a, 0, 4) == 1110) {
+                $i += 2;
+            }
+            $n++;
+        }
+        return $n;
+    } // End strlen_UTF8;
+
+    /**
      * 截取字符串
      * @param $contents
      * @param $length
      * @return string
      */
     function SubContents($contents, $length = 35){
-        $lx = strlen($contents);
+        $lx = $this->strlen_UTF8($contents);
         //yecho $lx;exit;
         if ($lx > $length) {
             return mb_substr($contents, 0, $length, 'UTF-8') . "...";

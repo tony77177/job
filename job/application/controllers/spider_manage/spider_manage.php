@@ -27,8 +27,8 @@ class Spider_manage extends CI_Controller{
 //        $this->get_gufe_info('EnterpriseInfo');
 //        $this->get_gufe_info('CampusInfo');
 //        $this->get_gzu_official_info('lowerJobs');
-//        $this->get_gzu_index_info('recruitment/campus');
-        $this->get_gzu_campus_info('campus');
+//        $this->get_gzu_official_info('recruitment/campus');
+//        $this->get_gzu_campus_info('campus');
 
         /**
          * 如果读取到数据则清除首页缓存
@@ -53,10 +53,12 @@ class Spider_manage extends CI_Controller{
         curl_setopt($ch, CURLOPT_URL, $url);
         $page = curl_exec($ch);
 
+
         $data = array(
-            'page' =>$page,
-            'ch' =>$ch
+            'page' => $page,
+            'http_code' => curl_getinfo($ch)['http_code']
         );
+        curl_close($ch);
         return $data;
     }
 
@@ -115,7 +117,7 @@ class Spider_manage extends CI_Controller{
 
         $regex = "/(<p.*?class=\"STYLE4\".*?>.*?<\/p>)/ism";
 
-        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+        if ($data['http_code'] == 200) {
 
             //获取内容部分信息
             preg_match_all ($regex, $page, $content);
@@ -173,7 +175,7 @@ class Spider_manage extends CI_Controller{
 
         $regex = "/(<table.*?width=\"100%\".*?border=\"0\".*?cellspacing=\"0\".*?cellpadding=\"0\">.*?<\/table>)/ism";
 
-        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+        if ($data['http_code'] == 200) {
 
             //获取内容部分信息
             preg_match_all ($regex, $page, $content);
@@ -197,6 +199,7 @@ class Spider_manage extends CI_Controller{
                 $prefix_url = "http://sw.gzife.edu.cn:8080/jiuyemis/";//URL前缀
 
                 $url_merge = $prefix_url.$matches[1];//合并后的URL
+
                 $title_merge = $matches[2];//标题
 
                 $dt_merge = trim($matches[3]);//时间
@@ -235,7 +238,7 @@ class Spider_manage extends CI_Controller{
 
         $regex = "/<div.class=\"area-mainList\">.*?<\/ul>/ism";
 
-        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+        if ($data['http_code'] == 200) {
 
             //获取内容部分信息
             preg_match_all ($regex, $page, $content);
@@ -291,7 +294,7 @@ class Spider_manage extends CI_Controller{
 
         $regex = "/<div.class=\"area-mainList\">.*?<\/ul>/ism";
 
-        if (curl_getinfo($data['ch'])['http_code'] == 200) {
+        if ($data['http_code'] == 200) {
 
             //获取内容部分信息
             preg_match_all ($regex, $page, $content);

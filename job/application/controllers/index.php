@@ -57,7 +57,7 @@ class Index extends CI_Controller {
 
         $this->spider_model->update_info($_id);//更新点击量
 
-        redirect($url);
+        redirect(htmlspecialchars_decode($url));//将HTML标签转义
     }
 
     /**

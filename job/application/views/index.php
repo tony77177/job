@@ -47,7 +47,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#about">收藏</a></li>
+                <li><a onclick="AddFavorite(window.location,document.title)" href="#">收藏</a></li>
             </ul>
         </div>
         <!--/.navbar-collapse -->
@@ -145,6 +145,15 @@
         </div>
     </div>
 </div>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=1&amp;pos=right&amp;uid=6625554" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+
 <!-- 链接jquery.js网络文件 -->
 <script src="https://code.jquery.com/jquery.js"></script>
 <!-- 链接bootstrap.js文件 -->
@@ -155,5 +164,26 @@
 <script src="resource/common/js/huidaodingbu.js"></script>
 <!-- 右边模块.js文件 -->
 <script src="resource/common/js/zw_leift.js"></script>
+<script type="text/javascript" language="javascript">
+    //加入收藏 
+        function AddFavorite(sURL, sTitle) { 
+            sURL = encodeURI(sURL); 
+        try{    
+            window.external.addFavorite(sURL, sTitle);   
+ 
+        }catch(e) {  
+            try{   
+                window.sidebar.addPanel(sTitle, sURL, "");  
+            }catch (e) {   
+                alert("加入收藏失败，请使用Ctrl+D进行添加,或手动在浏览器里进行设置.");
+            }   
+        } 
+    } 
+</script> 
+<!-- loading baidu stat -->
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F7d3fa93d8939cfe0353b06001fdd16d8' type='text/javascript'%3E%3C/script%3E"));
+</script>
 </body>
 </html>

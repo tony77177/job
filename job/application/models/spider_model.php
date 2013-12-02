@@ -14,10 +14,10 @@ class Spider_model extends CI_Model{
     }
 
     /**
-         * 检查数据是否存在
-         * @param array $data
-         * @return bool
-         */
+     * 检查数据是否存在
+     * @param array $data
+     * @return bool
+     */
     function check_info($data = array()){
         $title = $data['title'];
         $url = $data['url'];
@@ -33,10 +33,10 @@ class Spider_model extends CI_Model{
     }
 
     /**
-         * 保存数据
-         * @param array $data
-         * @return mixed
-         */
+     * 保存数据
+     * @param array $data
+     * @return mixed
+     */
     function save_info($data = array()){
         $title = $data['title'];
         $url = $data['url'];
@@ -49,14 +49,13 @@ class Spider_model extends CI_Model{
 
 
     /**
-         * 获取首页信息
-         * @param null $offset
-         * @param null $page_size
-         * @return mixed
-         */
-    function get_info_list($offset = NULL, $page_size = NULL) {
+     * 获取首页信息
+     * @param null $offset
+     * @param null $page_size
+     * @return mixed
+     */
+    function get_info_list($offset = NULL, $page_size = NULL){
         $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC LIMIT $offset,$page_size";
-//        $sql = "SELECT * FROM t_info ORDER BY insert_dt DESC";
         $query = $this->common_model->getDataList($sql, 'default');
         return $query;
     }
