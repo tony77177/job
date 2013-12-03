@@ -24,11 +24,11 @@ class Spider_manage extends CI_Controller{
 
     function index(){
         $this->get_163gz_info();
-//        $this->get_gufe_info('EnterpriseInfo');
-//        $this->get_gufe_info('CampusInfo');
-//        $this->get_gzu_official_info('lowerJobs');
-//        $this->get_gzu_official_info('recruitment/campus');
-//        $this->get_gzu_campus_info('campus');
+        $this->get_gufe_info('EnterpriseInfo');
+        $this->get_gufe_info('CampusInfo');
+        $this->get_gzu_official_info('lowerJobs');
+        $this->get_gzu_official_info('recruitment/campus');
+        $this->get_gzu_campus_info('campus');
 
         /**
          * 如果读取到数据则清除首页缓存

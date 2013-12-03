@@ -76,9 +76,13 @@ class Spider_model extends CI_Model{
      * @return mixed
      */
     function get_url($_id){
-        $sql = "SELECT url FROM t_info WHERE id='".$_id."' LIMIT 1";
+        $sql = "SELECT url FROM t_info WHERE id='" . $_id . "' LIMIT 1";
         $query = $this->common_model->getDataList($sql, 'default');
-        return $query[0]['url'];
+        if (empty($query)) {
+            return NULL;
+        } else {
+            return $query[0]['url'];
+        }
     }
 
 }

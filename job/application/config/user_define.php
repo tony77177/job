@@ -8,8 +8,7 @@
  */
 
 $config['site_list_info'] = array(
-  "163gz"=>array(
-      'url'=>'http://www.163gz.com/js/163.html',
-      'pattern'=>'test'
-  )
+    '163gz.com' => '163贵州网',
+    'gufe.edu.cn' => '贵州财经大学',
+    'gzu.edu.cn' => '贵州大学'
 );

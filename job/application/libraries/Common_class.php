@@ -162,7 +162,7 @@ class Common_class {
      * @param $length
      * @return string
      */
-    function SubContents($contents, $length = 35){
+    function SubContents($contents, $length = 30){
         $lx = $this->strlen_UTF8($contents);
         //yecho $lx;exit;
         if ($lx > $length) {
@@ -188,6 +188,20 @@ class Common_class {
         curl_close($ch);
 
         return $data;
+    }
+
+    /**
+     * 获取userdefine内容
+     * @param string $key   userdefine键值
+     * @return array        数组
+     */
+    public function getUserConfInfo($key = NULL){
+        $this->config->load('user_define', TRUE);
+        if (isset($key)) {
+            return $this->config->config['user_define'][$key];
+        } else {
+            return $this->config->config['user_define'];
+        }
     }
 }
 /*End of file Common_class.php*/
