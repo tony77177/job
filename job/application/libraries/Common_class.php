@@ -40,17 +40,6 @@ class Common_class {
 
         return $url;
     }
-
-
-    /**
-     * 获取当前微妙时间
-     * @param string $key   userdefine键值
-     * @return array        数组
-     */
-    public function getMicroTime(){
-        return time().substr(microtime(), 2,6);
-    }
-
     
     /**
      * 分页生成
@@ -61,47 +50,47 @@ class Common_class {
      * @param int $cur_page     当前页码，用于条件查询时初始返回第一页
      * @return mixed            分页信息
      */
-    public function getPageConfigInfo($base_url = null, $total_rows = 0, $per_page = 0, $uri_segment = 0,$offset=0) {
+    public function getPageConfigInfo($base_url = NULL, $total_rows = 0, $per_page = 0, $uri_segment = 0,$para = NULL) {
         $config = array();
 
-        if ($offset == 0) {
-            $cur_page = 1;
-        }
+        $config['use_page_numbers'] = TRUE;
 
-        if(isset($cur_page)){
-            $config['cur_page'] = $cur_page;
-        }
-        
+        $config['enable_query_strings'] = TRUE;
+
+        $config['page_query_string'] = TRUE;
+
+        $config['query_string_segment'] = $para;
+
         $config['base_url'] = site_url() . $base_url;
         $config['total_rows'] = $total_rows;
 
         $config['per_page'] = $per_page;
         $config['uri_segment'] = $uri_segment;
 
-        $config['full_tag_open'] = "<table width='100%'> <tr  style=\"background-color:#eee;line-height:25px;\" align='right'><td>";
-        $config['full_tag_close'] = '</td></tr></table>';
+        $config['full_tag_open'] = "<ul class=\"pagination pull-right\">";
+        $config['full_tag_close'] = "</ul>";
 
         $config['first_link'] = '首页';
-        $config['first_tag_open'] = ' <span class="page_link">[';
-        $config['first_tag_close'] = ']</span> ';
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li> ';
 
         $config['last_link'] = '尾页';
-        $config['last_tag_open'] = ' <span class="page_link">[';
-        $config['last_tag_close'] = ']</span"> ';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
 
         $config['next_link'] = '下一页';
-        $config['next_tag_open'] = ' <span class="page_link">[';
-        $config['next_tag_close'] = ']</span"> ';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li> ';
 
         $config['prev_link'] = '上一页';
-        $config['prev_tag_open'] = '<span class="page_link">[';
-        $config['prev_tag_close'] = ']</span">';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
 
-        $config['num_tag_open'] = ' <span class="page_link">[';
-        $config['num_tag_close'] = ']</span"> ';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
 
-        $config['cur_tag_open'] = ' [<span style="color:red;font-weight:bold;">';
-        $config['cur_tag_close'] = '</span>] ';
+        $config['cur_tag_open'] = '<li class="active"><a>';
+        $config['cur_tag_close'] = ' <span class="sr-only">(current)</span></a></li>';
         return $config;
     }
 

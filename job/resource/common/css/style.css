@@ -2,11 +2,12 @@
 /* CSS Document */
 *{font-family:"微软雅黑";}
 p{font-family:"微软雅黑";}
+.navbar-brand{ color:#fff !important; font-weight:bold !important}
 .zw_daxue a{ font-size:12px; color:#666; display:inline-block; padding:3px 10px; border-radius:6px}
 .zw_daxue a:hover{ color:#FFF; background:rgb(31,166,122); text-decoration:none}
 .active01{ background:rgb(31,133,122)}
 .nav .open{  background:rgb(64,112,52) !important}
-.nav li{ margin-left:1px}
+.nav li{ margin-left:10px}
 .nav li a{ color:#fff !important; font-size:16px !important}
 .nav li a:hover{ background:rgb(31,133,122)!important}
 .navbar-nav .open{  background:rgb(64,112,52) !important}
@@ -19,7 +20,7 @@ p{font-family:"微软雅黑";}
 .zw_list li .zw_laiyuan{ display:inline-block; width:200px; float:left;}
 .zw_list li .zw_laiyuan a{  color:#000; font-size:16px; font-family:"微软雅黑";}
 .zw_list li .zw_biaoti a{ color:#000; font-size:16px; font-family:"微软雅黑";}
-.zw_list li .zw_shijian { display:inline-block; width:60px; text-align:center; float:right}
+.zw_list li .zw_shijian { display:inline-block; width:80px; text-align:center; float:right}
 .zw_list_first{ font-size:16px; font-family:"微软雅黑"; font-weight:bold}
 
 
@@ -37,4 +38,23 @@ p{font-family:"微软雅黑";}
 .zw_footer_top .container a{ color:#999}
 .zw_footer_top .container a:hover{ color:#fff}
 
-
+/*搜索页面代码=================================================*/
+.select{border:#ddd 1px solid;border-radius:4px;width:100%; line-height:25px; font-size:12px; padding:10px 10px 10px 60px;}
+.select li{list-style:none; margin:0; padding:5px 0}
+.select .select-list{border-bottom:#eee 1px dashed}
+.select dl{zoom:1;position:relative;line-height:22px; margin:0; margin-top:3px;}
+.select dl:after{content:" ";display:block;clear:both;height:0;overflow:hidden}
+.select dt{width:100px;margin-bottom:5px;position:absolute;top:0;left:-100px;text-align:right;color:#666;height:24px;line-height:24px}
+.select dd{float:left;display:inline;margin:0 0 5px 5px;}
+.select a{display:inline-block;white-space:nowrap;height:22px; line-height:22px; padding:0 10px;text-decoration:none;color:#039;border-radius:2px; border-radius:6px}
+.select a:hover{color:#f60;background-color:#f3edc2}
+.select .selected a{color:#fff;background-color:#f60}
+.select-result{border-bottom:#eee 1px dashed}
+.select-result dt{font-weight:bold}
+.select-no{color:#999; line-height:22px;}
+.select .select-result a{padding-right:20px;background:#f60 url(../img/close.gif) right 9px no-repeat}
+.select .select-result a:hover{background-position:right -15px}
+.select_index{}
+.select_index dl{ margin-top:10px;}
+.select_index dl dt{ margin-top:5px;}
+.select_index dl dd {width:100%; margin:0 -10px}

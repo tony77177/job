@@ -12,6 +12,7 @@ class Search extends CI_Controller{
         parent::__construct();
         $this->load->model('spider_model');
         $this->load->library('common_class');
+        $this->load->library('pagination');
         $this->load->driver('cache');
     }
 
@@ -19,8 +20,19 @@ class Search extends CI_Controller{
      * Index
      */
     public function index(){
-        $_keyword = $this->input->get('keywords');
+        $_keyword = $this->input->get('filter_key');
         echo $_keyword;
+        $data['keywords'] = $_keyword;
+        $data['search_info_list'] = $this->spider_model->get_info_list(0, 20);
+        $data['from_src'] = $this->common_class->getUserConfInfo('site_list_info');
+
+        $test = "filter_key=手机&site=1&page";
+
+        $config = $this->common_class->getPageConfigInfo('/search/',4000,20,4,$test);
+
+        $this->pagination->initialize($config);
+
+        $this->load->view('search',$data);
     }
 
 }

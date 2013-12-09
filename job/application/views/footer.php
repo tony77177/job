@@ -1,10 +1,18 @@
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=1&amp;pos=right&amp;uid=6625554" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+
 <!--footer块代码=======================================================-->
 <footer class="zw_footer">
     <div class="zw_footer_top">
         <div class="container"> <a href="http://www.gufe.edu.cn" target="_blank">贵州财经大学</a> | <a href="http://www.gzu.edu.cn" target="_blank"> 贵州大学</a> | <a href="">师大</a> |<a href=""> 贵阳医学院</a> | <a href="">贵州民族大学</a> |<a href=""> 贵阳中医学院</a> |<a href=""> 贵阳学院</a> | <a href="">贵州警官职业学院</a> </div>
     </div>
     <div style="border-top: 1px solid rgb(79, 78, 78); text-align:center; padding:20px 0; font-size:12px">We Are Young<br>
-        Made by 赵昱，赵伟<br>
+        Made by 赵昱 赵伟<br>
         ©2013 贵州找工作 &emsp;<a title="网站建设、品牌营销策划、网页设计、互动网站建设" target="_blank" href="http://freedomdream.cn"> 畅想工作室 </a></div>
 </footer>
 <!--footer模块代码=======================================================-->

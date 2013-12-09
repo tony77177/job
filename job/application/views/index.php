@@ -18,8 +18,39 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
 </head>
 <body>
+
+<!--搜索代码===========================================-->
+<div class=" hidden-sm hidden-xs" style=" padding:20px 0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom:5px;"> <a href="#"><img class="img-responsive" src="<?php echo base_url() ?>resource/common/img/logo1.png"></a> </div>
+            <div class="col-md-5" style="margin-bottom:5px;">
+                <form action="<?php echo site_url() ?>/search/" method="get">
+                    <div class="input-group" id="search_container">
+                        <input style=" height:44px; font-size:22px;" class="form-control" type="text"
+                               placeholder="请输入搜索关键词" id="keywords" name="keywords"/>
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" style=" height:44px; font-size:22px;" type="submit" id="search">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                              </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3 zw_daxue">
+                <a href="#">贵大</a>
+                <a href="#">财经大学</a>
+                <a href="#">师大</a>
+                <a href="#">民族大学</a>
+                <a href="#">医学院</a>
+                <a href="#">中医学院</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php require_once('header.php');?>
 
@@ -28,7 +59,7 @@
     <div class="row">
         <div class="col-md-9">
             <ul class="zw_list">
-                <li class="zw_list_first"><span class="hidden-xs hidden-sm zw_laiyuan">来源网站</span>标题&nbsp;&nbsp;<span class="badge" style=" font-size:11px">访问量</span><span class="hidden-xs zw_shijian">时间</span> </li>
+                <li class="zw_list_first"><span class="hidden-xs hidden-sm zw_laiyuan">来源网站</span>标题&nbsp;&nbsp;<span class="badge" style=" font-size:11px">关注度</span><span class="hidden-xs zw_shijian">时间</span> </li>
                 <?php
                 for($i=0;$i<count($info_list);$i++){
                     ?>
@@ -51,7 +82,7 @@
                     }
                 ?>
             </ul>
-            <a style="float:right;margin:20px auto;" class="btn btn-default" href="#" type="button">查看更多</a>
+            <a style="float:right;margin:20px auto;" class="btn btn-default" href="<?php echo site_url() ?>/search/" type="button">查看更多</a>
         </div>
         <div class="col-md-3 visible-lg visible-md">
             <div id="tagscloud">
@@ -82,22 +113,20 @@
             </div>
 
             <h4><span class="label label-default">公告</span></h4>
-            <p style="text-indent: 30px;">我们提供给大家一个聚合阅读的场所，将贵州大部分招聘信息聚合在此，让您用最少的时间看到最多信息！但是，我们还很年轻，需要您的支持，找工作，上贵州找工作吧！</p>
-            <p>QQ群 99793122</p>
+            <p style="text-indent: 30px;">我们提供给大家一个聚合阅读的场所，将贵州大部分招聘信息聚合在此，让您用最少的时间看到最多信息！</p>
+			<p style="text-indent: 30px;">但是，我们还很年轻，需要您的支持，找工作，上贵州找工作吧！</p>
+            <p style="text-indent: 30px;">QQ群 <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=f40c5e3834b11b56a8a13cf162b09c03e24f7b656eba611f7e17bc14ba1a1b2b"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="贵州找工作" title="加入贵州找工作"></a></p>
         </div>
     </div>
 </div>
 
-
-<!-- Baidu Button BEGIN -->
-<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=1&amp;pos=right&amp;uid=6625554" ></script>
-<script type="text/javascript" id="bdshell_js"></script>
-<script type="text/javascript">
-    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
-</script>
-<!-- Baidu Button END -->
-
 <?php require_once('footer.php');?>
+
+<script>
+    $(document).ready(function(){
+        $("#job_index").attr("class","active01");
+    });
+</script>
 
 </body>
 </html>
