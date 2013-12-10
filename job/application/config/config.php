@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/job/';
+$config['base_url']	= 'http://localhost/web_me/job/';
 
 /*
 |--------------------------------------------------------------------------

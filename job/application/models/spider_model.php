@@ -47,6 +47,16 @@ class Spider_model extends CI_Model{
         return $result;
     }
 
+    /**
+     * 获取数据总条数
+     * @param $where
+     * @return count
+     */
+    function get_info_total_num($where = NULL){
+        $sql = "SELECT COUNT(*) AS num FROM t_info $where";
+        $count = $this->common_model->getTotalNum($sql, 'default');
+        return $count;
+    }
 
     /**
      * 获取首页信息

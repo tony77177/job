@@ -30,7 +30,7 @@
                 <form action="<?php echo site_url() ?>/search/" method="get">
                     <div class="input-group" id="search_container">
                         <input style=" height:44px; font-size:22px;" class="form-control" type="text"
-                               placeholder="请输入搜索关键词" id="keywords" name="keywords"/>
+                               placeholder="请输入搜索关键词" id="keywords" name="keywords" value="<?php echo $keywords;?>"/>
                               <span class="input-group-btn">
                                 <button class="btn btn-default" style=" height:44px; font-size:22px;" type="submit" id="search">
                                     <span class="glyphicon glyphicon-search"></span>

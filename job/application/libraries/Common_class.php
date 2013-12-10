@@ -50,7 +50,7 @@ class Common_class {
      * @param int $cur_page     当前页码，用于条件查询时初始返回第一页
      * @return mixed            分页信息
      */
-    public function getPageConfigInfo($base_url = NULL, $total_rows = 0, $per_page = 0, $uri_segment = 0,$para = NULL) {
+    public function getPageConfigInfo($base_url = NULL, $total_rows = 0, $per_page = 0, $uri_segment = 0,$param = NULL) {
         $config = array();
 
         $config['use_page_numbers'] = TRUE;
@@ -59,7 +59,7 @@ class Common_class {
 
         $config['page_query_string'] = TRUE;
 
-        $config['query_string_segment'] = $para;
+        $config['query_string_segment'] = $param;
 
         $config['base_url'] = site_url() . $base_url;
         $config['total_rows'] = $total_rows;
@@ -151,7 +151,7 @@ class Common_class {
      * @param $length
      * @return string
      */
-    function SubContents($contents, $length = 30){
+    function SubContents($contents, $length = 28){
         $lx = $this->strlen_UTF8($contents);
         //yecho $lx;exit;
         if ($lx > $length) {

@@ -20,7 +20,7 @@ p{font-family:"微软雅黑";}
 .zw_list li .zw_laiyuan{ display:inline-block; width:200px; float:left;}
 .zw_list li .zw_laiyuan a{  color:#000; font-size:16px; font-family:"微软雅黑";}
 .zw_list li .zw_biaoti a{ color:#000; font-size:16px; font-family:"微软雅黑";}
-.zw_list li .zw_shijian { display:inline-block; width:80px; text-align:center; float:right}
+.zw_list li .zw_shijian { display:inline-block; width:150px; text-align:center; float:right}
 .zw_list_first{ font-size:16px; font-family:"微软雅黑"; font-weight:bold}
 
 
