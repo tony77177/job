@@ -144,10 +144,11 @@ class CI_Pagination {
 
 		if ($CI->config->item('enable_query_strings') === TRUE OR $this->page_query_string === TRUE)
 		{
-			if ($CI->input->get($this->query_string_segment) != $base_page)
-			{
-				$this->cur_page = $CI->input->get($this->query_string_segment);
-
+//			if ($CI->input->get($this->query_string_segment) != $base_page)
+            if ($CI->input->get('page') != $base_page)
+            {
+//				$this->cur_page = $CI->input->get($this->query_string_segment);
+                $this->cur_page = $CI->input->get('page');
 				// Prep the current page - no funny business!
 				$this->cur_page = (int) $this->cur_page;
 			}
@@ -228,7 +229,7 @@ class CI_Pagination {
 		if  ($this->first_link !== FALSE AND $this->cur_page > ($this->num_links + 1))
 		{
 			$first_url = ($this->first_url == '') ? $this->base_url : $this->first_url;
-			$output .= $this->first_tag_open.'<a '.$this->anchor_class.'href="'.$first_url.'">'.$this->first_link.'</a>'.$this->first_tag_close;
+			$output .= $this->first_tag_open.'<a '.$this->anchor_class.'href="'.$first_url.'1">'.$this->first_link.'</a>'.$this->first_tag_close;
 		}
 
 		// Render the "previous" link
@@ -287,6 +288,10 @@ class CI_Pagination {
 						else
 						{
 							$n = ($n == '') ? '' : $this->prefix.$n.$this->suffix;
+
+                            if (empty($n)) {
+                                $n = 1;
+                            }
 
 							$output .= $this->num_tag_open.'<a '.$this->anchor_class.'href="'.$this->base_url.$n.'">'.$loop.'</a>'.$this->num_tag_close;
 						}

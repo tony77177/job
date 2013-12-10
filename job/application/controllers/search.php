@@ -23,7 +23,8 @@ class Search extends CI_Controller{
      * Index
      */
     public function index(){
-        $param = ""; //分页参数
+        $param = "page"; //分页参数
+
         $data['keywords'] = "";
         $where = "";
 
@@ -31,11 +32,23 @@ class Search extends CI_Controller{
 
         if ($this->input->get('page')) {
             $offset = (int)$this->input->get('page') - 1;
+            $param = "page" . $this->input->get('page'); //页数
         }
 
-        $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
-        $param .= "&page" . $this->input->get('page'); //页数
-        $data['keywords'] = $this->input->get('keywords');
+
+
+
+
+
+        if($this->input->get('keywords')){
+            $data['keywords'] = $this->input->get('keywords');
+            $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
+            $param .= "&page" . $this->input->get('page'); //页数
+        }
+
+//        $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
+//        $param .= "&page" . $this->input->get('page'); //页数
+//        $data['keywords'] = $this->input->get('keywords');
 
 
         $data['search_info_list'] = $this->spider_model->get_info_list($offset, $this->per_page);
