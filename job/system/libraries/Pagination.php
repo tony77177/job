@@ -144,11 +144,11 @@ class CI_Pagination {
 
 		if ($CI->config->item('enable_query_strings') === TRUE OR $this->page_query_string === TRUE)
 		{
-//			if ($CI->input->get($this->query_string_segment) != $base_page)
-            if ($CI->input->get('page') != $base_page)
+			if ($CI->input->get($this->query_string_segment) != $base_page)
+//            if ($CI->input->get('page') != $base_page)
             {
-//				$this->cur_page = $CI->input->get($this->query_string_segment);
-                $this->cur_page = $CI->input->get('page');
+				$this->cur_page = $CI->input->get($this->query_string_segment);
+//                $this->cur_page = $CI->input->get('page');
 				// Prep the current page - no funny business!
 				$this->cur_page = (int) $this->cur_page;
 			}
@@ -215,7 +215,7 @@ class CI_Pagination {
 		// string. If post, add a trailing slash to the base URL if needed
 		if ($CI->config->item('enable_query_strings') === TRUE OR $this->page_query_string === TRUE)
 		{
-			$this->base_url = rtrim($this->base_url).'?'.$this->query_string_segment.'=';
+			$this->base_url = rtrim($this->base_url).'&amp;'.$this->query_string_segment.'=';
 		}
 		else
 		{

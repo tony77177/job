@@ -78,7 +78,7 @@
                 ?>
                 <?php
                     if(count($info_list)==0){
-                        echo "<p>没有数据！</p>";
+                        echo "<p align=\"center\" style=\"color:red\">没有数据！</p>";
                     }
                 ?>
             </ul>

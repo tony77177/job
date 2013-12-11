@@ -68,34 +68,21 @@
                     <dl id="select1">
                         <dt>类型：</dt>
                         <dd class="select-all selected"><a href="javascript:void(0);">全部</a></dd>
-                        <dd><a href="javascript:void(0);">针织衫</a></dd>
-                        <dd><a href="javascript:void(0);">毛呢外套</a></dd>
-                        <dd><a href="javascript:void(0);">T恤</a></dd>
-                        <dd><a href="javascript:void(0);">羽绒服</a></dd>
-                        <dd><a href="javascript:void(0);">棉衣</a></dd>
-                        <dd><a href="javascript:void(0);">羽绒服</a></dd>
-                        <dd><a href="javascript:void(0);">棉衣</a></dd>
-                        <dd><a href="javascript:void(0);">卫衣</a></dd>
-                        <dd><a href="javascript:void(0);">风衣</a></dd>
+                        <dd><a href="javascript:void(0);">银行</a></dd>
+                        <dd><a href="javascript:void(0);">事业单位</a></dd>
+                        <dd><a href="javascript:void(0);">公务员</a></dd>
+                        <dd><a href="javascript:void(0);">民营企业</a></dd>
                     </dl>
                 </li>
                 <li class="select-list">
                     <dl id="select2">
                         <dt>来源：</dt>
                         <dd class="select-all selected"><a href="javascript:void(0);">全部</a></dd>
-                        <dd><a href="javascript:void(0);">牛仔裤</a></dd>
-                        <dd><a href="javascript:void(0);">小脚/铅笔裤</a></dd>
-                        <dd><a href="javascript:void(0);">休闲裤</a></dd>
-                        <dd><a href="javascript:void(0);">打底裤</a></dd>
-                        <dd><a href="javascript:void(0);">哈伦裤</a></dd>
-                        <dd><a href="javascript:void(0);">牛仔裤</a></dd>
-                        <dd><a href="javascript:void(0);">小脚/铅笔裤</a></dd>
-                        <dd><a href="javascript:void(0);">休闲裤</a></dd>
-                        <dd><a href="javascript:void(0);">牛仔裤</a></dd>
-                        <dd><a href="javascript:void(0);">小脚/铅笔裤</a></dd>
-                        <dd><a href="javascript:void(0);">休闲裤</a></dd>
-                        <dd><a href="javascript:void(0);">打底裤</a></dd>
-                        <dd><a href="javascript:void(0);">哈伦裤</a></dd>
+                        <dd><a href="javascript:void(0);">163贵州网</a></dd>
+                        <dd><a href="javascript:void(0);">贵州大学</a></dd>
+                        <dd><a href="javascript:void(0);">贵州财经大学</a></dd>
+                        <dd><a href="javascript:void(0);">贵州人才信息网</a></dd>
+                        <dd><a href="javascript:void(0);">贵州人才网</a></dd>
                     </dl>
                 </li>
                 <li class="select_index">
@@ -124,13 +111,18 @@
                     <span class="hidden-xs hidden-sm zw_laiyuan"><a class="zw_tanchu" data-toggle="tooltip" title="<?php echo $from_src[$search_info_list[$i]["from_src"]];?>"href=""><?php echo $from_src[$search_info_list[$i]["from_src"]];?></a></span>
                     <span class="zw_biaoti">
                         <a class="zw_tanchu" href="<?php echo site_url();?>/index/redirect/<?php echo $search_info_list[$i]["id"];?>" target="_blank" data-toggle="tooltip" title="<?php echo $search_info_list[$i]["title"];?>">
-                            <?php echo $this->common_class->SubContents($search_info_list[$i]["title"],45);?>
+                            <?php echo str_replace($keywords,"<font color=\"red\">".$keywords."</font>",$this->common_class->SubContents($search_info_list[$i]["title"],45));?>
                         </a>
                         <span class="badge"><?php echo $search_info_list[$i]["num"];?></span>
                     </span>
                     <span class="hidden-xs zw_shijian zw_tanchu" data-toggle="tooltip" title="<?php echo $search_info_list[$i]["insert_dt"];?>"><?php echo $this->common_class->getFormatTime($search_info_list[$i]["insert_dt"]);?></span></a>
                 </li>
                 <?php
+                }
+                ?>
+                <?php
+                if(count($search_info_list)==0){
+                    echo "<p align=\"center\" style=\"color:red\">没有数据！</p>";
                 }
                 ?>
             </ul>

@@ -23,27 +23,20 @@ class Search extends CI_Controller{
      * Index
      */
     public function index(){
-        $param = "page"; //分页参数
-
-        $data['keywords'] = "";
-        $where = "";
+        $param = ""; //分页参数
+        $data['keywords'] = "";//搜索关键词
+        $where = "";//条件查询
 
         $offset = 0; //偏移量
 
-        if ($this->input->get('page')) {
-            $offset = (int)$this->input->get('page') - 1;
-            $param = "page" . $this->input->get('page'); //页数
+        if ($this->input->get('per_page')) {
+            $offset = ((int)$this->input->get('per_page') - 1) * $this->per_page;//计算偏移量
         }
 
-
-
-
-
-
         if($this->input->get('keywords')){
-            $data['keywords'] = $this->input->get('keywords');
+            $data['keywords'] = trim($this->input->get('keywords'));
             $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
-            $param .= "&page" . $this->input->get('page'); //页数
+            $where = "WHERE title LIKE '%".$data['keywords']."%'";
         }
 
 //        $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
@@ -51,13 +44,13 @@ class Search extends CI_Controller{
 //        $data['keywords'] = $this->input->get('keywords');
 
 
-        $data['search_info_list'] = $this->spider_model->get_info_list($offset, $this->per_page);
+        $data['search_info_list'] = $this->spider_model->get_info_list($offset, $this->per_page,$where);
         $data['from_src'] = $this->common_class->getUserConfInfo('site_list_info');
 
         $count = $this->spider_model->get_info_total_num($where); //总条数
 
         //初始化分页数据
-        $config = $this->common_class->getPageConfigInfo('/search/', $count, $this->per_page, $this->uri_segment, $param);
+        $config = $this->common_class->getPageConfigInfo('/search/?'.$param, $count, $this->per_page, $this->uri_segment);
         $this->pagination->initialize($config);
 
         $this->load->view('search', $data);
