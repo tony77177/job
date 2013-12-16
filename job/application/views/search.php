@@ -112,14 +112,20 @@
                     <span class="zw_biaoti">
                         <a class="zw_tanchu" href="<?php echo site_url();?>/index/redirect/<?php echo $search_info_list[$i]["id"];?>" target="_blank" data-toggle="tooltip" title="<?php echo $search_info_list[$i]["title"];?>">
                             <?php
-                                foreach($_keywords as $key){
-                                    $where .= " OR title LIKE '%".$key."%'";
-                                    str_replace($keywords,"<font color=\"red\">".$keywords."</font>",$this->common_class->SubContents($search_info_list[$i]["title"],45));
+                                $title = $this->common_class->SubContents($search_info_list[$i]["title"],45);
+                                if(!empty($_keywords)){
+                                    for($j=0;$j<count($_keywords);$j++){
+                                        $title = str_replace($_keywords[$j],"<font color=\"red\">".$_keywords[$j]."</font>",$title);
+                                    }
                                 }
-                                echo $keywords;
+                                echo $title;
                             ?>
                         </a>
-                        <span class="badge"><?php echo $search_info_list[$i]["num"];?></span>
+                        <span class="badge">
+                            <?php
+                                echo $search_info_list[$i]["num"];
+                            ?>
+                        </span>
                     </span>
                     <span class="hidden-xs zw_shijian zw_tanchu" data-toggle="tooltip" title="<?php echo $search_info_list[$i]["insert_dt"];?>"><?php echo $this->common_class->getFormatTime($search_info_list[$i]["insert_dt"]);?></span></a>
                 </li>
@@ -132,18 +138,7 @@
                 }
                 ?>
             </ul>
-
             <?php echo $this->pagination->create_links(); ?>
-
-<!--            <ul class="pagination pull-right">-->
-<!--                <li class="disabled"><a href="#">«</a></li>-->
-<!--                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
-<!--                <li><a href="#">2</a></li>-->
-<!--                <li><a href="#">3</a></li>-->
-<!--                <li><a href="#">4</a></li>-->
-<!--                <li><a href="#">5</a></li>-->
-<!--                <li><a href="#">»</a></li>-->
-<!--            </ul>-->
         </div>
     </div>
 </div>

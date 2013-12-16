@@ -24,6 +24,7 @@ class Search extends CI_Controller{
     public function index(){
         $param = ""; //分页参数
         $data['keywords'] = "";//搜索关键词
+        $data['_keywords'] = "";
         $where = "WHERE 1=1";//条件查询
 
         $offset = 0; //偏移量
@@ -33,15 +34,43 @@ class Search extends CI_Controller{
         }
 
         if($this->input->get('keywords')){
+            //通过API获取分词结果
+            $url = "http://www.xunsearch.com/scws/api.php";
+            $data = array(
+                'data' => trim($this->input->get('keywords')),
+                'respond' => "json"
+            );
+            $result = $this->common_class->post($url,$data);
+            $result = json_decode($result);
+            $_keywords = array();
+            if ($result->status == 'ok') {
+                for ($i = 0; $i < count($result->words); $i++) {
+                    $_keywords[$i] = $result->words[$i]->word;
+                }
+            }
+//            print_r($_keywords);exit;
+//            $so = scws_new();
+//            $so->set_charset('utf-8');
+//            // 这里没有调用 set_dict 和 set_rule 系统会自动试调用 ini 中指定路径下的词典和规则文件
+//            $so->send_text(trim($this->input->get('keywords')));
+//            while ($tmp = $so->get_result())
+//            {
+//                print_r($tmp);
+//            }
+//            $so->close();
+//            exit;
             $data['keywords'] = trim($this->input->get('keywords'));
             $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
 
-            $_keywords = $this->get_result($data['keywords']);
+//            $_keywords = $this->get_result($data['keywords']);
+
+            $where = "WHERE title LIKE '%".$data['keywords']."%'";
+            $order_by = "ORDER BY REPLACE(title,'".$data['keywords']."',''),";
             foreach($_keywords as $key){
                 $where .= " OR title LIKE '%".$key."%'";
+                $order_by .= "REPLACE(title,'".$key."',''),";
             }
             $data['_keywords'] = $_keywords;
-            $where .= " OR title LIKE '%".$data['keywords']."%'";
         }
 
 //        $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
