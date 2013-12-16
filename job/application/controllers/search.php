@@ -16,7 +16,6 @@ class Search extends CI_Controller{
         $this->load->model('spider_model');
         $this->load->library('common_class');
         $this->load->library('pagination');
-//        $this->load->driver('cache');
     }
 
     /**
@@ -25,7 +24,7 @@ class Search extends CI_Controller{
     public function index(){
         $param = ""; //分页参数
         $data['keywords'] = "";//搜索关键词
-        $where = "";//条件查询
+        $where = "WHERE 1=1";//条件查询
 
         $offset = 0; //偏移量
 
@@ -36,7 +35,13 @@ class Search extends CI_Controller{
         if($this->input->get('keywords')){
             $data['keywords'] = trim($this->input->get('keywords'));
             $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
-            $where = "WHERE title LIKE '%".$data['keywords']."%'";
+
+            $_keywords = $this->get_result($data['keywords']);
+            foreach($_keywords as $key){
+                $where .= " OR title LIKE '%".$key."%'";
+            }
+            $data['_keywords'] = $_keywords;
+            $where .= " OR title LIKE '%".$data['keywords']."%'";
         }
 
 //        $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
@@ -54,6 +59,31 @@ class Search extends CI_Controller{
         $this->pagination->initialize($config);
 
         $this->load->view('search', $data);
+    }
+
+    function get_result($_keywords){
+        require_once(APPPATH.'third_party/word_segment/phpanalysis_class.php');
+
+        $do_fork = $do_unit = $do_multi = true;
+        $do_prop = $pri_dict = false;
+
+        $pa = new PhpAnalysis_class('utf-8', 'utf-8', $pri_dict);
+
+        $pa->loadInit = true;
+
+        $pa->LoadDict();
+
+        //执行分词
+        $pa->SetSource($_keywords);
+        $pa->differMax = $do_multi;
+        $pa->unitWord = $do_unit;
+
+        $pa->StartAnalysis( $do_fork );
+
+        $okresult = $pa->GetFinallyResult(' ', $do_prop);
+        $subStr = explode(" ", $okresult);
+        array_shift($subStr);//去掉第一个空格
+        return $subStr;
     }
 }
 

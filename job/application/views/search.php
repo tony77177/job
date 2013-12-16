@@ -111,7 +111,13 @@
                     <span class="hidden-xs hidden-sm zw_laiyuan"><a class="zw_tanchu" data-toggle="tooltip" title="<?php echo $from_src[$search_info_list[$i]["from_src"]];?>"href=""><?php echo $from_src[$search_info_list[$i]["from_src"]];?></a></span>
                     <span class="zw_biaoti">
                         <a class="zw_tanchu" href="<?php echo site_url();?>/index/redirect/<?php echo $search_info_list[$i]["id"];?>" target="_blank" data-toggle="tooltip" title="<?php echo $search_info_list[$i]["title"];?>">
-                            <?php echo str_replace($keywords,"<font color=\"red\">".$keywords."</font>",$this->common_class->SubContents($search_info_list[$i]["title"],45));?>
+                            <?php
+                                foreach($_keywords as $key){
+                                    $where .= " OR title LIKE '%".$key."%'";
+                                    str_replace($keywords,"<font color=\"red\">".$keywords."</font>",$this->common_class->SubContents($search_info_list[$i]["title"],45));
+                                }
+                                echo $keywords;
+                            ?>
                         </a>
                         <span class="badge"><?php echo $search_info_list[$i]["num"];?></span>
                     </span>
