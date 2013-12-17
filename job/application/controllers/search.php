@@ -48,21 +48,9 @@ class Search extends CI_Controller{
                     $_keywords[$i] = $result->words[$i]->word;
                 }
             }
-//            print_r($_keywords);exit;
-//            $so = scws_new();
-//            $so->set_charset('utf-8');
-//            // 这里没有调用 set_dict 和 set_rule 系统会自动试调用 ini 中指定路径下的词典和规则文件
-//            $so->send_text(trim($this->input->get('keywords')));
-//            while ($tmp = $so->get_result())
-//            {
-//                print_r($tmp);
-//            }
-//            $so->close();
-//            exit;
+
             $data['keywords'] = trim($this->input->get('keywords'));
             $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
-
-//            $_keywords = $this->get_result($data['keywords']);
 
             $where = "WHERE title LIKE '%".$data['keywords']."%'";
             $order_by = "ORDER BY REPLACE(title,'".$data['keywords']."',''),";
@@ -72,11 +60,6 @@ class Search extends CI_Controller{
             }
             $data['_keywords'] = $_keywords;
         }
-
-//        $param = "keywords=".$this->input->get('keywords'); //搜索框关键词
-//        $param .= "&page" . $this->input->get('page'); //页数
-//        $data['keywords'] = $this->input->get('keywords');
-
 
         $data['search_info_list'] = $this->spider_model->get_info_list($offset, $this->per_page,$where);
         $data['from_src'] = $this->common_class->getUserConfInfo('site_list_info');
@@ -88,31 +71,6 @@ class Search extends CI_Controller{
         $this->pagination->initialize($config);
 
         $this->load->view('search', $data);
-    }
-
-    function get_result($_keywords){
-        require_once(APPPATH.'third_party/word_segment/phpanalysis_class.php');
-
-        $do_fork = $do_unit = $do_multi = true;
-        $do_prop = $pri_dict = false;
-
-        $pa = new PhpAnalysis_class('utf-8', 'utf-8', $pri_dict);
-
-        $pa->loadInit = true;
-
-        $pa->LoadDict();
-
-        //执行分词
-        $pa->SetSource($_keywords);
-        $pa->differMax = $do_multi;
-        $pa->unitWord = $do_unit;
-
-        $pa->StartAnalysis( $do_fork );
-
-        $okresult = $pa->GetFinallyResult(' ', $do_prop);
-        $subStr = explode(" ", $okresult);
-        array_shift($subStr);//去掉第一个空格
-        return $subStr;
     }
 }
 

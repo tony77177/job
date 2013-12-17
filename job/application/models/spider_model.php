@@ -66,7 +66,7 @@ class Spider_model extends CI_Model{
      * @return mixed
      */
     function get_info_list($offset = NULL, $page_size = NULL, $where = NULL){
-        $sql = "SELECT * FROM t_info $where LIMIT $offset,$page_size";
+        $sql = "SELECT * FROM t_info $where ORDER BY insert_dt DESC LIMIT $offset,$page_size";
         $query = $this->common_model->getDataList($sql, 'default');
         return $query;
     }
