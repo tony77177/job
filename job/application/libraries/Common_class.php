@@ -151,7 +151,7 @@ class Common_class {
      * @param $length
      * @return string
      */
-    function SubContents($contents, $length = 28){
+    function SubContents($contents, $length = 26){
         $lx = $this->strlen_UTF8($contents);
         //yecho $lx;exit;
         if ($lx > $length) {
