@@ -20,12 +20,13 @@
                 </form>
             </div>
             <div class="col-md-3 zw_daxue">
-                <a href="#">贵大</a>
-                <a href="#">财经大学</a>
-                <a href="#">师大</a>
-                <a href="#">民族大学</a>
-                <a href="#">医学院</a>
-                <a href="#">中医学院</a>
+                <a href="https://jinshuju.net/f/1kjp1h" style="margin-top: 10px;text-decoration:underline;" title="意见反馈" target="_blank">意见反馈</a>
+<!--                <a href="#">贵大</a>-->
+<!--                <a href="#">财经大学</a>-->
+<!--                <a href="#">师大</a>-->
+<!--                <a href="#">民族大学</a>-->
+<!--                <a href="#">医学院</a>-->
+<!--                <a href="#">中医学院</a>-->
             </div>
         </div>
     </div>

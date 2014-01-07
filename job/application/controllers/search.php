@@ -43,6 +43,15 @@ class Search extends CI_Controller{
         if ($this->input->get('keywords')) {
             $keywords = trim($this->input->get('keywords'));
 
+            //匹配中英文，去掉特殊字符
+            $match_result = preg_match_all('/[a-zA-Z0-9\x{4e00}-\x{9fa5}]/u',$keywords,$result);
+            if (!empty($match_result)) {
+                $keywords = $result[0][0];
+                for ($match_num = 1; $match_num < count($result[0]); $match_num++) {
+                    $keywords .= $result[0][$match_num];
+                }
+            }
+
             $_keywords = array(); //分词结果
 
             if (!$this->cache->file->get(md5($keywords))) {

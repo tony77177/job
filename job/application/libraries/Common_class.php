@@ -11,35 +11,6 @@ class Common_class {
         $this->config = $CI->config;
         $this->load = $CI->load;
     }
-
-    /**
-     * 获取当前控制器的url
-     * @param string $url   控制器的绝对路径
-     * @return string   $url     当前控制器的url
-     */
-    public function getSiteUrl($url=null){
-        //注：2013.11.8，修改为通过 $this->uri->segment(XX)来获取相应段 by zhaoyu
-//        if ($url) {
-//            $delimiter = "controllers";
-//            $url = str_replace(array("\\",".php"), array("/",""), substr($url, strpos($url, $delimiter)+strlen($delimiter)));
-//        }
-        $url = site_url().$url;
-        return $url;
-    }
-
-    /**
-     * 获取当前控制器的默认页面
-     * @param string $url   控制器的绝对路径
-     * @return string   $url     当前控制器的url
-     */
-    public function getDefaultUrl($url=null){
-        if ($url) {
-            $delimiter = "controllers";
-           $url = str_replace(array("\\",".php"), array("/",""), substr($url, strpos($url, $delimiter)+strlen($delimiter)));
-        }
-
-        return $url;
-    }
     
     /**
      * 分页生成
@@ -58,8 +29,6 @@ class Common_class {
         $config['enable_query_strings'] = TRUE;
 
         $config['page_query_string'] = TRUE;
-
-//        $config['query_string_segment'] = $param;
 
         $config['base_url'] = site_url() . $base_url;
         $config['total_rows'] = $total_rows;
