@@ -23,7 +23,7 @@ class Spider_manage extends CI_Controller{
     }
 
     function index(){
-        $this->get_163gz_info();
+        $this->get_gyrc_news_info();
         $this->get_gufe_info('EnterpriseInfo');
         $this->get_gufe_info('CampusInfo');
         $this->get_gzu_official_info('lowerJobs');
