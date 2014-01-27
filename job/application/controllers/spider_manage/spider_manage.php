@@ -336,11 +336,6 @@ class Spider_manage extends CI_Controller{
     }
 
     function get_gyrc_news_info(){
-        $t1 = microtime(true);
-
-//php script here
-
-
         $url = "http://www.gyrc.com.cn/news/zkxx/";
 
         $num = 0;//单独计数
@@ -390,9 +385,54 @@ class Spider_manage extends CI_Controller{
         $this->number = $num;//计数
         $this->get_result_num('gyrc.com.cn');//输出结果
         $this->totalnum = $this->totalnum + $this->number;//总数
-        $t2 = microtime(true);
+    }
 
-        echo (($t2-$t1)*1000).'ms';
+    function get_gznu_info(){
+        $url = 'http://zjc.gznu.edu.cn/Zjweb/JobList.aspx';
+
+        $num = 0;//单独计数
+
+        $data = $this->get_page_info($url);
+
+        $page = $data['page'];
+
+        $regex = "/<table.cellspacing=\"0\".cellpadding=\"4\".border=\"0\".id=\"ctl00_CotentHolder_GridView1\".width=\"99%\">(.*?)<\/table>/ism";
+
+        if ($data['http_code'] == 200) {
+
+            //获取内容部分信息
+            preg_match_all ($regex, $page, $content);
+
+            //进行逐条数据获取
+            $result = preg_match_all('/<tr.align="left".bgcolor=".*?">.*?<font.color="#333333">(.*?)<\/font>.*?<td.align="left".width="120"><font.color="#333333">(.*?)<\/font><\/td>.*?<a.href="(.*?)">.*?<\/a>.*?<\/tr>/ism',$content[1][0],$matches);
+
+            for($i=0;$i<count($matches[1]);$i++){
+
+                $prefix_url = "http://zjc.gznu.edu.cn/Zjweb/";//URL前缀
+
+                $url_merge = $prefix_url.$matches[3][$i];//合并后的URL
+
+                $title_merge = $matches[1][$i];//标题
+                $title_merge = mb_convert_encoding($title_merge, "UTF-8", "GBK");//编码转换
+
+                $dt_merge = $matches[2][$i];//时间
+
+                //是否为本站，排除广告信息
+                $is_auth = strstr($url_merge,'JobDetails');
+
+                if ($is_auth) {
+                    if ($result) {
+                        $save_result = $this->save_info($title_merge,$url_merge,$dt_merge,'gznu.edu.cn');
+                        if (isset($save_result) && $save_result == TRUE) {
+                            $num++;
+                        }
+                    }
+                }
+            }
+        }
+        $this->number = $num;//计数
+        $this->get_result_num('gznu.edu.cn');//输出结果
+        $this->totalnum = $this->totalnum + $this->number;//总数
     }
 }
 

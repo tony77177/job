@@ -17,7 +17,8 @@ $config['site_list_info'] = array(
     '163gz.com' => '163贵州网',
     'gufe.edu.cn' => '贵州财经大学',
     'gzu.edu.cn' => '贵州大学',
-    'gyrc.com.cn' => '贵阳人才网'
+    'gyrc.com.cn' => '贵阳人才网',
+    'gznu.edu.cn' => '贵州师范大学'
 );
 
 /**
