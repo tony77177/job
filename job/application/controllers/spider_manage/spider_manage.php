@@ -46,6 +46,15 @@ class Spider_manage extends CI_Controller{
      */
     function get_page_info($_url){
         $ch = curl_init();
+
+        //伪造成魅族的UA
+        $user_agent = 'User-Agent,Mozilla/5.0 (Linux; Android 5.1; MZ-MX4 Build/LMY47I) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/45.0.2454.94 Mobile Safari/537.36';
+        curl_setopt($ch, CURLOPT_URL, $_url);
+
+        //伪造UA及客户端IP地址，防止被服务器端封IP   注：但是 REMOTE_ADDR 无法伪造，服务器仍然可以获取此地址
+        curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-FORWARDED-FOR:111.85.211.178', 'CLIENT-IP:111.85.211.178'));
+
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
